@@ -2,6 +2,8 @@ const GRID_SIZE = 30;
 let numberOfPresents;
 let squares;
 let mouseIsOverSquare, squareClicked;
+let squareHeight;
+let squareX, squareY;
 
 class Squares {
     squareX;
@@ -14,13 +16,14 @@ class Squares {
 
     drawSquare() {
         noStroke();
-        fill(20, 255, 0);
-        square(this.squareX, this.squareY, GRID_SIZE - 5);
+        square(this.squareX, this.squareY, 25);
+
+        console.log(this.squareX, this.squareY);
     }
 
     mouseOverSquare() {
-        if(mouseX < (squareHeight + squareX) && mouseX > squareX && 
-            mouseY > squareY && mouseY < (squareHeight + squareY)) {
+        if(mouseX < (25 + this.squareX) && mouseX > this.squareX && 
+            mouseY > this.squareY && mouseY < (25 + this.squareY)) {
             mouseIsOverSquare = true;
         }
         else {
@@ -35,33 +38,49 @@ function setup() {
     console.log(numberOfPresents);
 
     squareClicked = false;
+    mouseIsOverSquare = false;
+
+    squares = new Squares(0, 0);
+
+    fill(20, 255, 0);
 }
 
 function draw() {
     background(200, 40, 20);
 
-    squares = new Squares(GRID_SIZE, GRID_SIZE);
+    squares.drawSquare();
+    squares.mouseOverSquare();
 
-    // if(0 < mouseX < i && 0 < mouseY < j && mouseClicked) {
-    //     squareClicked = true;
-    // }
-
-    // for(let i = 15; i < width - GRID_SIZE + 15; i += GRID_SIZE) {
-    //     for(let j = GRID_SIZE * 5; j < height - GRID_SIZE - 15; j += GRID_SIZE) {
-    //         if(squareClicked === false) {
-    //             fill(180);
-    //             noStroke();
-    //             square(i, j, GRID_SIZE - 5);
-    //         }
-    //         else {
-    //             fill(180, 0);
-    //             noStroke();
-    //             square(i, j, GRID_SIZE - 5);
+    // for(squareX = 15; squareX < width - GRID_SIZE + 15; squareX += GRID_SIZE) {
+    //     for(squareY = GRID_SIZE * 5; squareY < height - GRID_SIZE - 15; squareY += GRID_SIZE) {
+    //             squares.drawSquare();
+    //             squares.mouseOverSquare();
     //         }
     //     }
     // }
+
+    // squareX = 0;
+    // squareY = 0;
+    // squareHeight = GRID_SIZE - 5;
+
+    // noStroke();
+    // square(squareX, squareY, squareHeight);
+
+    // mouseOverSquare();
+
+    // console.log(mouseIsOverSquare, mouseIsPressed);
     
 }
+
+// function mouseOverSquare() {
+//     if(mouseX < (squareHeight + squareX) && mouseX > squareX && 
+//         mouseY > squareY && mouseY < (squareHeight + squareY)) {
+//         mouseIsOverSquare = true;
+//     }
+//     else {
+//         mouseIsOverSquare = false;
+//     }
+// }
 
 function mousePressed() {
     if(mouseIsOverSquare === true) {
