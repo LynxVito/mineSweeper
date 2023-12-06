@@ -10,12 +10,17 @@ let coalAround;
 let newCoalCoord;
 let coalIndeces = [];
 let numberFont;
+let tagPresent;
+let restartButton;
 
 function preload() {
     bluePresentOpening = loadImage("assets/present-animation-1.gif");
     bluePresent = loadImage("assets/blue present.png");
+    pinkPresent = loadImage("assets/pink present.png");
     coal = loadImage("assets/coal.png");
     numberFont = loadFont("assets/Pacifico-Regular.ttf");
+    restartButton = loadImage("assets/restart.png");
+    timer = loadImage("assets/timer.png");
 }
 
 class Button {
@@ -42,11 +47,19 @@ class Button {
             textAlign(CENTER, CENTER);
             textSize(GRID_SIZE * 1.1);
             fill(20, 255, 0);
-            text(this.totalNumber, button[i].buttonX + GRID_SIZE /2, button[i].buttonY + GRID_SIZE / 6);
+            text(this.totalNumber, this.buttonX + GRID_SIZE /2,
+            this.buttonY + GRID_SIZE / 6);
         }
         else {
             image(coal, this.buttonX, this.buttonY,
             coal.width / 4.5, coal.height / 4.5);
+        }
+    }
+
+    drawTaggedPresent() {
+        if(tagPresent === true && mouseIsOverPresent === true) {
+            image(pinkPresent, this.buttonX, this.buttonY,
+            GRID_SIZE, GRID_SIZE);
         }
     }
 
@@ -98,11 +111,14 @@ class Button {
 }
 
 function setup() {
-    createCanvas(GRID_SIZE * 13, GRID_SIZE * 21);
-    numberOfCoal = floor(random(50, 100));
+    createCanvas(GRID_SIZE * 21, GRID_SIZE * 28);
+    numberOfCoal = floor(random(100, 125));
+    console.log(numberOfCoal);
 
     presentClicked = false;
     mouseIsOverPresent = false;
+
+    tagPresent = false;
 
     for(buttonX = 15; buttonX < width - GRID_SIZE + 15; buttonX += GRID_SIZE) {
         for(buttonY = GRID_SIZE * 5; buttonY < height - GRID_SIZE - 15; buttonY += GRID_SIZE) {
@@ -121,8 +137,23 @@ function setup() {
 function draw() {
     background(200, 40, 20);
 
+    image(restartButton, width - GRID_SIZE * 7, GRID_SIZE * 1.2,
+        restartButton.width * 12 / GRID_SIZE, restartButton.height * 12 / GRID_SIZE);
+
+    image(timer, GRID_SIZE, GRID_SIZE,
+        timer.width, timer.height);
+
     for(i = 0; i < button.length; i++) {
         button[i].draw();
+    }
+
+    if(tagPresent === false) {
+        image(bluePresent, width - GRID_SIZE * 3.5, GRID_SIZE * 1.3,
+            bluePresent.width / GRID_SIZE * 2, bluePresent.height / GRID_SIZE * 2);
+    }
+    else {
+        image(pinkPresent, width - GRID_SIZE * 3.5, GRID_SIZE * 1.3,
+            pinkPresent.width / GRID_SIZE * 2, pinkPresent.height / GRID_SIZE * 2);
     }
 }
 
@@ -158,4 +189,15 @@ function coalCoordinate() {
     }
 
     return randomCellFloor;
+}
+
+function keyPressed() {
+    if(key === "e") {
+        tagPresent = true;
+        return tagPresent;
+    }
+    if(key === "w") {
+        tagPresent = false;
+        return tagPresent;
+    }
 }
