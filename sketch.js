@@ -29,6 +29,8 @@ function preload() {
     restartButton = loadImage("assets/restart.png");
     timer = loadImage("assets/timer.png");
     countUp = loadFont("assets/Inconsolata-VariableFont_wdth,wght.ttf");
+    youWinScreen = loadImage("assets/you-win-screen.gif");
+    youLoseScreen = loadImage("assets/you-lose-screen.gif");
 }
 
 class Button {
@@ -310,6 +312,13 @@ function keyPressed() {
 function gameOver() {
     for (i = 0; i < button.length; i++) {
         if (gameIsOver === true) {
+            rectMode(CENTER);
+            fill(0, 175);
+            noStroke();
+            rect(width / 2, (height / 2) + GRID_SIZE * 2, width - GRID_SIZE, height - GRID_SIZE * 6);
+            imageMode(CENTER);
+            image(youLoseScreen, width / 2, height / 2,
+             youLoseScreen.width / 2, youLoseScreen.height / 2);
             return gameIsOver;
         }
     }
@@ -324,6 +333,13 @@ function convertSeconds(s){
 function gameWon() {
     for (i = 0; i < button.length; i++) {
         if(notCoal === (numberOfCells - numberOfCoal)) {
+            rectMode(CENTER);
+            fill(230, 150);
+            noStroke();
+            rect(width / 2, (height / 2) + GRID_SIZE * 2, width - GRID_SIZE, height - GRID_SIZE * 6);
+            imageMode(CENTER);
+            image(youWinScreen, width / 2, height / 2,
+             youWinScreen.width / 2, youWinScreen.height / 2);
             youWin = true;
             return youWin;
         }
