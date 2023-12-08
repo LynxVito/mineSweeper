@@ -14,7 +14,11 @@ let tagModeOn;
 let restartButton;
 let gameIsOver;
 let presentsTagged;
-let isMouseInsideCircle, restartGame;
+let isMouseInsideCircle, distanceFromCircle, restartGame;
+var counter = 0;
+var clock = 0;
+let notCoal;
+let youWin;
 
 function preload() {
     bluePresentOpening = loadImage("assets/present-animation-1.gif");
@@ -24,6 +28,7 @@ function preload() {
     numberFont = loadFont("assets/Pacifico-Regular.ttf");
     restartButton = loadImage("assets/restart.png");
     timer = loadImage("assets/timer.png");
+    countUp = loadFont("assets/Inconsolata-VariableFont_wdth,wght.ttf");
 }
 
 class Button {
@@ -33,6 +38,7 @@ class Button {
     buttonY;
     totalNumber;
     isPresentTagged;
+    notCoal;
 
     constructor(x, y) {
         this.buttonX = x;
@@ -116,8 +122,7 @@ class Button {
 
 function setup() {
     createCanvas(GRID_SIZE * 21, GRID_SIZE * 28);
-    numberOfCoal = floor(random(100, 125));
-    console.log(numberOfCoal);
+    numberOfCoal = floor(random(80, 100));
 
     gameIsOver = false;
 
@@ -126,8 +131,12 @@ function setup() {
 
     tagModeOn = false;
 
-    isMouseInsideCircle = false;
-    restartGame = false
+    notCoal = 0;
+
+    youWin = false;
+
+    // isMouseInsideCircle = false;
+    // restartGame = false;
 
     presentsTagged = numberOfCoal;
 
@@ -143,15 +152,33 @@ function setup() {
         coalX.push(button[newCoalCoord].buttonX);
         coalY.push(button[newCoalCoord].buttonY);
     }
+
+    console.log(numberOfCells, numberOfCells - numberOfCoal, numberOfCoal)
 }
 
 function draw() {
     background(200, 40, 20);
 
-    image(restartButton, width - GRID_SIZE * 7.3, GRID_SIZE * 1.3,
+    imageMode(CENTER);
+    image(restartButton, GRID_SIZE * 15, GRID_SIZE * 2.6,
         restartButton.width * 12 / GRID_SIZE, restartButton.height * 12 / GRID_SIZE);
 
+    imageMode(CORNER);
     image(timer, GRID_SIZE, GRID_SIZE * 1.3, timer.width, timer.height);
+
+    textAlign(RIGHT, CENTER);
+    textSize(65);
+    fill(255, 0, 30);
+    textFont(countUp);
+    counter = int(millis() / 1000);
+
+    if(gameIsOver === false && youWin === false) {
+        if(frameCount % 60 === 0){
+            clock = convertSeconds(counter++);
+        }
+    }
+    
+    text(clock, GRID_SIZE * 6.8, GRID_SIZE * 2.3);
 
     fill(20, 255, 0);
     textAlign(CENTER, CENTER);
@@ -172,26 +199,31 @@ function draw() {
             pinkPresent.width / GRID_SIZE * 2, pinkPresent.height / GRID_SIZE * 2);
     }
 
+    // distanceFromCircle = dist((GRID_SIZE * 15), (GRID_SIZE * 2.6), mouseX, mouseY);
+
     gameOver();
 
-    // restart();
+    gameWon();
 
-    console.log(isMouseInsideCircle)
+    console.log(notCoal, youWin)
+
+    // restart();
 }
 
 function mousePressed() {
-    if(gameIsOver === false) {
+    if(gameIsOver === false && youWin === false) {
         for (i = 0; i < button.length; i++) {
             if (button[i].mouseOverPresent() === true) {
                 let coalFound = false;
                 if (tagModeOn === false) {
                     if(button[i].isPresentTagged === false) { 
                     button[i].buttonClicked = true;
+                    notCoal++;
                         for (j = 0; j < button.length; j++) {
                             if (mouseX > coalX[j] && mouseX < (coalX[j] + GRID_SIZE) &&
                                 mouseY > coalY[j] && mouseY < (coalY[j] + GRID_SIZE)) {
                                 button[i].displayPresent = false;
-                                CoalFound = true;
+                                coalFound = true;
                                 gameIsOver = true;
                             }
                         }
@@ -214,13 +246,16 @@ function mousePressed() {
                 }
             }
         }
-    }   
-
-    isMouseInsideCircle = (mouseX - (width - GRID_SIZE * 7.3) + (restartButton.width / 2)) * (mouseX - (width - GRID_SIZE * 7.3) + (restartButton.width / 2)) + (mouseY - (GRID_SIZE * 1.3) + (restartButton.height / 2)) * (mouseY - (GRID_SIZE * 1.3) + (restartButton.height / 2));
-
-    if(isMouseInsideCircle <= restartButton.width * restartButton.width) {
-        restartGame = true;
     }
+
+    // if(distanceFromCircle <= restartButton.width * 6 / GRID_SIZE) {
+    //     isMouseInsideCircle = true;
+    //     return isMouseInsideCircle;
+    // }
+    // else {
+    //     isMouseInsideCircle = false
+    //     return isMouseInsideCircle;
+    // }
 }
 
 function coalCoordinate() {
@@ -249,17 +284,48 @@ function keyPressed() {
     }
 }
 
-function restart() {
-    if(restartGame = true) {
-        fill(0)
-        square(20, 20, 20);
-    }
-}
+// function restart() {
+//     if(isMouseInsideCircle === true) {
+//         gameIsOver = false;
+//         presentClicked = false;
+//         mouseIsOverPresent = false;
+//         tagModeOn = false;
+//         presentsTagged = numberOfCoal;
+        
+//         for (buttonX = 15; buttonX < width - GRID_SIZE + 15; buttonX += GRID_SIZE) {
+//             for (buttonY = GRID_SIZE * 5; buttonY < height - GRID_SIZE - 15; buttonY += GRID_SIZE) {
+//                 button.push(new Button(buttonX, buttonY));
+//             }
+//         }
+    
+//         for (i = 0; i < numberOfCoal; i++) {
+//             newCoalCoord = coalCoordinate();
+//             coalIndeces.push(newCoalCoord);
+//             coalX.push(button[newCoalCoord].buttonX);
+//             coalY.push(button[newCoalCoord].buttonY);
+//         }
+//     }
+// }
 
 function gameOver() {
     for (i = 0; i < button.length; i++) {
         if (gameIsOver === true) {
             return gameIsOver;
+        }
+    }
+}
+
+function convertSeconds(s){
+    var min = floor(s/60);
+    var sec = s % 60;
+    return nf(min, 2) + ":" + nf(sec, 2);
+}
+
+function gameWon() {
+    for (i = 0; i < button.length; i++) {
+        if(notCoal === (numberOfCells - numberOfCoal)) {
+            youWin = true;
+            return youWin;
         }
     }
 }
