@@ -70,10 +70,8 @@ class Button {
             }
         }
         else if (this.isPresentTagged === true) {
-            if(presentsTagged >= 0) {
                 image(pinkPresent, this.buttonX, this.buttonY,
                     GRID_SIZE, GRID_SIZE);
-            }
         }
     }
 
@@ -178,8 +176,6 @@ function draw() {
             clock = convertSeconds(counter++);
         }
     }
-
-    console.log(tagModeOn)
     
     text(clock, GRID_SIZE * 6.8, GRID_SIZE * 2.3);
 
@@ -242,8 +238,10 @@ function mousePressed() {
                 else {
                     if (button[i].isPresentTagged === true) {
                         button[i].isPresentTagged = false;
-                        presentsTagged++;
-                        return presentsTagged;
+                        if(presentsTagged >= 0) {
+                            presentsTagged++;
+                            return presentsTagged;
+                        }
                     }
                     else {
                         button[i].isPresentTagged = true;
