@@ -124,7 +124,7 @@ class Button {
 
 function setup() {
     createCanvas(GRID_SIZE * 21, GRID_SIZE * 28);
-    numberOfCoal = floor(random(180, 220));
+    numberOfCoal = floor(random(75, 100));
 
     gameIsOver = false;
 
