@@ -302,7 +302,7 @@ function restart() {
         coalIndeces = [];
         counter = 0;
         clock = 0;
-        numberOfCoal = floor(random(80, 100));
+        numberOfCoal = floor(random(180, 220));
         convertSeconds(0);
 
         for (buttonX = 15; buttonX < width - GRID_SIZE + 15; buttonX += GRID_SIZE) {
