@@ -70,8 +70,10 @@ class Button {
             }
         }
         else if (this.isPresentTagged === true) {
-            image(pinkPresent, this.buttonX, this.buttonY,
-                GRID_SIZE, GRID_SIZE);
+            if(presentsTagged >= 0) {
+                image(pinkPresent, this.buttonX, this.buttonY,
+                    GRID_SIZE, GRID_SIZE);
+            }
         }
     }
 
