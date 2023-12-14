@@ -40,7 +40,6 @@ class Button {
     buttonY;
     totalNumber;
     isPresentTagged;
-    notCoal;
 
     constructor(x, y) {
         this.buttonX = x;
@@ -211,6 +210,8 @@ function draw() {
     gameWon();
 
     restart();
+
+    console.log(numberOfCells, notCoal, numberOfCoal)
 }
 
 function mousePressed() {
@@ -270,7 +271,7 @@ function coalCoordinate() {
     randomCellFloor = floor(randomCell);
 
     while (coalIndeces.includes(randomCellFloor) === true) {
-        numberOfCells = ((width - GRID_SIZE) / GRID_SIZE) * ((height - GRID_SIZE * 6) / GRID_SIZE);
+        // numberOfCells = ((width - GRID_SIZE) / GRID_SIZE) * ((height - GRID_SIZE * 6) / GRID_SIZE);
         randomCell = random(numberOfCells);
         randomCellFloor = floor(randomCell);
     }
