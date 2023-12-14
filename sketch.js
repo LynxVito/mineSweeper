@@ -123,7 +123,7 @@ class Button {
 
 function setup() {
     createCanvas(GRID_SIZE * 21, GRID_SIZE * 28);
-    numberOfCoal = floor(random(75, 100));
+    numberOfCoal = floor(random(75, 101));
 
     gameIsOver = false;
 
@@ -220,7 +220,7 @@ function mousePressed() {
             if (button[i].mouseOverPresent() === true) {
                 let coalFound = false;
                 if (tagModeOn === false) {
-                    if(button[i].isPresentTagged === false) { 
+                    if(button[i].isPresentTagged === false && button[i].buttonClicked === false) { 
                     button[i].buttonClicked = true;
                     notCoal++;
                         for (j = 0; j < button.length; j++) {
@@ -303,7 +303,7 @@ function restart() {
         coalIndeces = [];
         counter = 0;
         clock = 0;
-        numberOfCoal = floor(random(75, 100));
+        numberOfCoal = floor(random(75, 101));
         convertSeconds(0);
 
         for (buttonX = 15; buttonX < width - GRID_SIZE + 15; buttonX += GRID_SIZE) {
